@@ -3,6 +3,7 @@ import logo from '../logo.png'
 import Web3 from 'web3'
 import './App.css'
 import Navbar from './Navbar'
+import SocialNetwork from '../abis/SocialNetwork.json'
 
 const App = () => {
   const [state, setState] = useState({
@@ -31,9 +32,20 @@ const App = () => {
   const loadBlockchainData = async () => {
     const web3 = window.web3
     if (web3) {
+      // load accounts
       const accounts = await web3.eth.getAccounts()
       setState({ account: accounts[0] })
-      console.log(accounts)
+
+      // Network ID
+      // Network ID
+      const networkId = await web3.eth.net.getId()
+      const networkData = SocialNetwork.networks[networkId]
+      if (networkData) {
+        const socialNetwork = web3.eth.Contract(SocialNetwork.abi, networkData.address)
+        setState({ socialNetwork })
+      } else {
+        window.alert('SocialNetwork contract not deployed to detected network.')
+      }
     }
   }
 

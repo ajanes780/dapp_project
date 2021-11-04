@@ -1,4 +1,5 @@
 import React from 'react'
+import Identicon from 'identicon.js'
 
 const Navbar = (props) => {
   return (
@@ -15,6 +16,18 @@ const Navbar = (props) => {
         <li className='nav-item text-nowrap d-none d-sm-none d-sm-block'>
           <small className='text-secondary'>
             <small id='account'>Your wallet: {props.account}</small>
+
+            {props.account ? (
+              <img
+                alt='account logo'
+                className='m1-2'
+                width='30'
+                height='30'
+                src={`data:image/png;base64,${new Identicon(props.account, 30).toString()}`}
+              />
+            ) : (
+              <span> </span>
+            )}
           </small>
         </li>
       </ul>
